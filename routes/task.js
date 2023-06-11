@@ -18,7 +18,7 @@ router.post(
 );
 
 router.get("/all", isLoggedIn, task.getAllTasks);
-// router.delete("/delete/:task_id", task.deleteTask);
+router.delete("/delete/:task_id", task.deleteTask);
 router.delete("/delete/all", task.deleteTaskByProperty);
 router.put("/update/:task_id", task.updateTask);
 // router.put("/update/:task_id", task.updateTask);

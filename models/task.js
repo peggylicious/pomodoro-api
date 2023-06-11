@@ -9,11 +9,16 @@ const TaskSchema = mongoose.Schema({
   // name: String,
   title: String,
   description: String,
+  date: Date,
   status: String,
   pomodoros: Number,
   timeLeft: Number,
   totalCycles: Number,
-  isComplete: Boolean
+  isCompleteCycle: Boolean,
+  singleCycle: Number,
+  category: String, 
+  selectedPomodoros: Number,
+  isCompletePomodoros: Boolean
 });
 
 // reminderSchema.methods.requiresNotification = function(date) {

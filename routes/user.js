@@ -71,6 +71,56 @@ router.post('/signup', (req, res, next) => {
 })
 
 router.post('/login', (req, res, next) => {
+  console.log("here")
+ let foundUser;
+  const registeredUser = new User({
+    email: req.body.email,
+    password: req.body.password,
+  });
+
+  User.findOne({ email: req.body.email }).then((userExists) => {
+    console.log("User is ", userExists);
+
+    if (userExists === null) {
+      return res.status(401).json({ message: "User does not exists" });
+    }
+    console.log(
+      "Body Pass ",
+      req.body.password,
+      " | Db Pass ",
+      userExists.password
+    );
+    let comparePassword = bcrypt.compare(
+      req.body.password,
+      userExists.password
+    );
+    foundUser = userExists;
+    comparePassword
+      .then((passwordIsCorrect) => {
+        console.log("Password is correct", passwordIsCorrect);
+        if (passwordIsCorrect === false) {
+          return res.status(401).json({
+            message: "Auth failed 1",
+          });
+        }
+        var token = jwt.sign(
+          { email: req.body.email, tid: foundUser._id },
+          process.env.HASH, 
+          // { expiresIn: '240s' }
+        );
+        console.log("Token ", token);
+        return res.status(200).json({
+          message: "Auth successful",
+          token: token,
+          loggedUserId: foundUser._id,
+        });
+      })
+      .catch((err) => {
+        next(err);
+      });
+  });
+})
+router.post('/reset-password', (req, res, next) => {
  let foundUser;
   const registeredUser = new User({
     email: req.body.email,

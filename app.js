@@ -30,6 +30,7 @@ app.use('/user', userRoutes)
 
 // error handler middleware
 app.use((error, req, res, next) => {
+  console.log("err")
     console.log(error)
       res.status(error.status || 500).json({
         // error: {

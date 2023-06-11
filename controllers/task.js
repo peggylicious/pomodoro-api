@@ -18,11 +18,16 @@ module.exports.createTask = (req, res, next) => {
     created_by: req.body.created_by,
     title: req.body.title,
     description: req.body.description,
+    date: req.body.date,
     status: req.body.status,
     pomodoros: req.body.pomodoros,
     timeLeft: 0,
-    isComplete: req.body.isComplete,
-    totalCycles: req.body.totalCycles
+    isCompleteCycle: req.body.isCompleteCycle,
+    singleCycle: req.body.singleCycle,
+    totalCycles: req.body.totalCycles,
+    category: req.body.category,
+    selectedPomodoros: req.body.selectedPomodoros,
+    isCompletePomodoros: req.body.isCompletePomodoros
     // date: req.body.date,
     // time: req.body.time
     // payment_due: req.body.payment_due,
@@ -99,7 +104,7 @@ module.exports.getAllTasks = (req, res, next) => {
 };
 module.exports.deleteTask = (req, res, next) => {
   taskSchema
-    .deleteOne({ task_id: req.params.task_id })
+    .deleteOne({ _id: req.params.task_id })
     .then((result) => {
       res.status(201).json(result);
     })
@@ -110,8 +115,7 @@ module.exports.deleteTask = (req, res, next) => {
 module.exports.updateTask = (req, res, next) => {
   console.log("Updating " + req.params.task_id)
   taskSchema
-    .findOneAndUpdate({ _id: req.params.task_id }, { $set: { timeLeft: req.body.timeLeft, isComplete: req.body.isComplete, pomodoros: req.body.pomodoros, totalCycles: req.body.totalCycles}}, {new: true})
-
+    .findOneAndUpdate({ _id: req.params.task_id }, { $set: { timeLeft: req.body.timeLeft, isCompleteCycle: req.body.isCompleteCycle, pomodoros: req.body.pomodoros, totalCycles: req.body.totalCycles, singleCycle: req.body.singleCycle, isCompletePomodoros: req.body.isCompletePomodoros}}, {new: true})
     .then((x) => {
       res.status(200).json(x);
     })
@@ -123,7 +127,7 @@ module.exports.deleteTaskByProperty = (req, res, next) => {
   console.log("req")
 
   taskSchema
-    .deleteMany({ status: 'nil' })
+    .deleteMany({ status: '' })
     .then((result) => {
       res.status(201).json(result);
     })
