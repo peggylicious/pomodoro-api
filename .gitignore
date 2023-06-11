@@ -3,5 +3,5 @@ build
 npm-debug.log
 .nyc
 .env
-.env.example
+# .env.example
 .DS_Store
