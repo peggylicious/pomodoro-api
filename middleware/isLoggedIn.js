@@ -43,5 +43,7 @@ module.exports = (req, res, next) => {
   }
   console.log('User identification number ', decoded.tid)
   req.userId = decoded.tid
+  req.userName = decoded.firstName
+  console.log("my decoded", decoded)
   next();
 };

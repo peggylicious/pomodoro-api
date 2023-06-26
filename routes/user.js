@@ -9,7 +9,8 @@ const router = express.Router({ mergeParams: true });
 router.post('/create', (req, res, next) => {
     let newUser = new User({
     id: new mongoose.Types.ObjectId(),
-    user_name: req.body.user_name,
+    firstName: req.body.firstName,
+    lastName: lastName,
     company_name: req.body.company_name,
     last_task_digit: 0
     })
@@ -49,8 +50,8 @@ router.post('/signup', (req, res, next) => {
         // Frontend should also verify that both passwords are same b4 sending to Backend
         const newUser = new User({
           id: new mongoose.Types.ObjectId(),
-          firstname: req.body.firstname,
-          lastname: req.body.lastname,
+          firstName: req.body.firstName,
+          lastname: req.body.lastName,
           email: req.body.email,
           password: hash,
         //   role: req.params.role
@@ -104,7 +105,7 @@ router.post('/login', (req, res, next) => {
           });
         }
         var token = jwt.sign(
-          { email: req.body.email, tid: foundUser._id },
+          { email: req.body.email, tid: foundUser._id, name: foundUser.firstName },
           process.env.HASH, 
           // { expiresIn: '240s' }
         );
@@ -113,6 +114,7 @@ router.post('/login', (req, res, next) => {
           message: "Auth successful",
           token: token,
           loggedUserId: foundUser._id,
+          userName: foundUser.firstName
         });
       })
       .catch((err) => {
